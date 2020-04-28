@@ -15,4 +15,4 @@ const replySchema = new mongoose.Schema({
 
 let Reply = mongoose.model("Reply", threadSchema);
 
-module.exports = Thread;
+module.exports = Reply;

@@ -6,10 +6,15 @@ const bodyParser = require("body-parser");
 const expect = require("chai").expect;
 const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
+const helmet = require("helmet");
 
 const apiRoutes = require("./routes/api.js");
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner.js");
+
+app.use(helmet());
+app.use(helmet.frameguard({ action: "sameorigin" }));
+app.use(helmet.referrerPolicy({ policy: "same-origin" }));
 
 const cors = require("cors");
 app.use(cors({ origin: "*" })) //For FCC testing

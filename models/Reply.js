@@ -4,15 +4,15 @@ const replySchema = new mongoose.Schema({
     text: String,
     delete_password: String,
     created_on: {
-        Type: Date,
-        default: new Date.now
+        type: Date,
+        default: Date.now
     },
     reported: {
-        Type: Boolean,
+        type: Boolean,
         default: false
     }
 });
 
-let Reply = mongoose.model("Reply", threadSchema);
+let Reply = mongoose.model("Reply", replySchema);
 
 module.exports = Reply;

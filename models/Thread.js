@@ -9,15 +9,15 @@ const threadSchema = new mongoose.Schema({
         ref: "Reply"
     }],
     created_on: {
-        Type: Date,
-        default: new Date.now
+        type: Date,
+        default: Date.now
     },
     bumped_on: {
-        Type: Date,
-        default: new Date.now
+        type: Date,
+        default: Date.now
     },
     reported: {
-        Type: Boolean,
+        type: Boolean,
         default: false
     }
 });

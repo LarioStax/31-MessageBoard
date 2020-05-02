@@ -48,6 +48,7 @@ module.exports = function (app) {
                 } else {
                   foundBoard.threads.push(createdThread);
                   foundBoard.save();
+                  // console.log(createdThread);
                   res.redirect("/b/" + board);
                 }
               });
@@ -61,6 +62,33 @@ module.exports = function (app) {
 
     })
 
-  app.route('/api/replies/:board');
+  app.route('/api/replies/:board')
+    //post a new reply to an existing thread
+    .post(function (req, res) {
+      const board = req.params.board;
+      const thread_id = req.body.thread_id;
+      Thread.findById(thread_id, function (err, foundThread) {
+        if (err) {
+          console.log(err);
+        } else {
+          let newReply = {
+            text: req.body.text,
+            delete_password: req.body.delete_password
+          }
+          Reply.create(newReply, function (err, createdReply) {
+            if (err) {
+              console.log(err);
+            } else {
+              foundThread.bumped_on = Date.now();
+              foundThread.save();
+              // console.log(foundThread);
+              // console.log(createdReply);
+              res.redirect(`/b/${board}/${thread_id}`)
+            }
+          })
+
+        }
+      })
+    });
 
 };

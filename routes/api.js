@@ -121,7 +121,8 @@ module.exports = function (app) {
             return res.json("Incorrect password!");
           }
           if (foundReply.delete_password === delete_password) {
-            foundReply.remove()
+            foundReply.text = "[Deleted!]";
+            foundReply.save();
             return res.json("Success!");
           }
         }

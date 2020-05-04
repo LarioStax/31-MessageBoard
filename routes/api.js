@@ -104,6 +104,7 @@ module.exports = function (app) {
           return res.json("Thread not found!");
         } else {
           foundThread.reported = true;
+          foundThread.save();
           return res.json("Success!");
         }
       })

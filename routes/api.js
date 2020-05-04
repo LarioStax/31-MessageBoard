@@ -99,6 +99,18 @@ module.exports = function (app) {
       });
     })
 
+    .put(function (req, res) {
+      const thread_id = req.body.thread_id;
+      Thread.findById(thread_id, function (err, foundThread) {
+        if (err || !foundThread) {
+          return res.json("Thread not found!");
+        } else {
+          foundThread.reported = true;
+          return res.json("Success!");
+        }
+      })
+    })
+
     .delete(function (req, res) {
       // ******* CHECK DOES THIS REMOVE THE THREAD FROM BOARDS THREAD ARRAY AS WELL!!!! *********
       const thread_id = req.body.thread_id;

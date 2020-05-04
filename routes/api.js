@@ -157,6 +157,7 @@ module.exports = function (app) {
               console.log(err);
             } else {
               foundThread.replies.push(createdReply);
+              foundThread.replycount++;
               foundThread.bumped_on = Date.now();
               foundThread.save();
               // console.log(foundThread);

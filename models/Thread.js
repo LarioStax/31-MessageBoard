@@ -8,6 +8,10 @@ const threadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Reply"
     }],
+    replycount: {
+        type: Number,
+        default: 0
+    },
     created_on: {
         type: Date,
         default: Date.now

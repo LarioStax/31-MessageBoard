@@ -38,11 +38,11 @@ module.exports = function (app) {
             } else {
               let options = [{
                 path: "threads",
-                select: {"reported": 0, "delete_password": 0, "__v": 0},
+                select: { "reported": 0, "delete_password": 0, "__v": 0 },
                 options: { sort: { bumped_on: -1 }, limit: 10 },
                 populate: {
                   path: "replies",
-                  select: {"reported": 0, "delete_password": 0, "__v": 0},
+                  select: { "reported": 0, "delete_password": 0, "__v": 0 },
                   options: { sort: { created_on: -1 }, limit: 3 }
                 }
               }]
@@ -117,12 +117,29 @@ module.exports = function (app) {
         }
       })
     })
+    
+  app.route('/api/replies/:board')
 
     .get(function (req, res) {
+      const thread_id = req.query.thread_id;
+      let options = [{
+        path: "replies",
+        select: { "reported": 0, "delete_password": 0, "__v": 0 },
+        options: { sort: { created_on: 1 } }
+      }];
 
+      Thread.findById(thread_id, function (err, foundThread) {
+        Thread.populate(foundThread, options, function (err, populatedThread) {
+          if (err) {
+            console.log(err)
+          } else {
+            // console.log(populatedThread);
+            res.json(populatedThread);
+          }
+        })
+      });
     })
 
-  app.route('/api/replies/:board')
     //post a new reply to an existing thread
     .post(function (req, res) {
       const board = req.params.board;
@@ -142,8 +159,8 @@ module.exports = function (app) {
               foundThread.replies.push(createdReply);
               foundThread.bumped_on = Date.now();
               foundThread.save();
-              console.log(foundThread);
-              console.log(createdReply);
+              // console.log(foundThread);
+              // console.log(createdReply);
               res.redirect(`/b/${board}/${thread_id}`)
             }
           })

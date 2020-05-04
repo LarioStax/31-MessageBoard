@@ -50,7 +50,6 @@ module.exports = function (app) {
                 if (err) {
                   console.log(err);
                 } else {
-                  // console.log(populatedBoard);
                   res.json(populatedBoard.threads);
                 }
               })
@@ -89,7 +88,6 @@ module.exports = function (app) {
                 } else {
                   foundBoard.threads.push(createdThread);
                   foundBoard.save();
-                  // console.log(createdThread);
                   res.redirect(`/b/${board}/`);
                 }
               });
@@ -112,7 +110,6 @@ module.exports = function (app) {
     })
 
     .delete(function (req, res) {
-      // ******* CHECK DOES THIS REMOVE THE THREAD FROM BOARDS THREAD ARRAY AS WELL!!!! *********
       const thread_id = req.body.thread_id;
       const delete_password = req.body.delete_password;
       Thread.findById(thread_id, function (err, foundThread) {
@@ -145,7 +142,6 @@ module.exports = function (app) {
           if (err) {
             console.log(err)
           } else {
-            // console.log(populatedThread);
             res.json(populatedThread);
           }
         })
@@ -172,8 +168,6 @@ module.exports = function (app) {
               foundThread.replycount++;
               foundThread.bumped_on = Date.now();
               foundThread.save();
-              // console.log(foundThread);
-              // console.log(createdReply);
               res.redirect(`/b/${board}/${thread_id}`)
             }
           })
@@ -194,7 +188,6 @@ module.exports = function (app) {
     })
 
     .delete(function (req, res) {
-      // ******* CHECK DOES THIS REMOVE THE REPLY FROM THREADS REPLIES ARRAY AS WELL!!!! *********
       const reply_id = req.body.reply_id;
       const delete_password = req.body.delete_password;
       Reply.findById(reply_id, function (err, foundReply) {

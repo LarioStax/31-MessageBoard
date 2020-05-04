@@ -48,7 +48,7 @@ module.exports = function (app) {
                 } else {
                   foundBoard.threads.push(createdThread);
                   foundBoard.save();
-                  console.log(createdThread);
+                  // console.log(createdThread);
                   res.redirect("/b/" + board);
                 }
               });
@@ -109,6 +109,23 @@ module.exports = function (app) {
       })
     })
 
-    .delete()
+    .delete(function (req, res) {
+      // ******* CHECK DOES THIS REMOVE THE REPLY FROM THREADS REPLIES ARRAY AS WELL!!!! *********
+      const reply_id = req.body.reply_id;
+      const delete_password = req.body.delete_password;
+      Reply.findById(reply_id, function (err, foundReply) {
+        if (err || !foundReply) {
+          return res.json("Reply not found!");
+        } else {
+          if (foundReply.delete_password !== delete_password) {
+            return res.json("Incorrect password!");
+          }
+          if (foundReply.delete_password === delete_password) {
+            foundReply.remove()
+            return res.json("Success!");
+          }
+        }
+      })
+    })
 
 };

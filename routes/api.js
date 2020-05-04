@@ -18,6 +18,48 @@ const Reply = require("../models/Reply.js")
 module.exports = function (app) {
 
   app.route('/api/threads/:board')
+
+    .get(function (req, res) {
+      const board = req.params.board;
+      let update = {};
+      let options = {
+        upsert: true,
+        setDefaultsOnInsert: true,
+        new: true
+      }
+
+      Board.findOneAndUpdate({ board }, update, options, function (err, updatedBoard) {
+        if (err) {
+          console.log(err);
+        } else {
+          Board.findOne({ board }, function (err, foundBoard) {
+            if (err) {
+              console.log(err);
+            } else {
+              let options = [{
+                path: "threads",
+                select: {"reported": 0, "delete_password": 0, "__v": 0},
+                options: { sort: { bumped_on: -1 }, limit: 10 },
+                populate: {
+                  path: "replies",
+                  select: {"reported": 0, "delete_password": 0, "__v": 0},
+                  options: { sort: { created_on: -1 }, limit: 3 }
+                }
+              }]
+              Board.populate(foundBoard, options, function (err, populatedBoard) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  // console.log(populatedBoard);
+                  res.json(populatedBoard.threads);
+                }
+              })
+            }
+          })
+        }
+      });
+    })
+
     //post a new thread to a board that either exists or gets created
     .post(function (req, res) {
       const board = req.params.board;
@@ -27,7 +69,6 @@ module.exports = function (app) {
         setDefaultsOnInsert: true,
         new: true
       }
-      let returnObject = {};
 
       Board.findOneAndUpdate({ board }, update, options, function (err, updatedBoard) {
         if (err) {
@@ -100,8 +141,8 @@ module.exports = function (app) {
             } else {
               foundThread.bumped_on = Date.now();
               foundThread.save();
-              // console.log(foundThread);
-              // console.log(createdReply);
+              console.log(foundThread);
+              console.log(createdReply);
               res.redirect(`/b/${board}/${thread_id}`)
             }
           })

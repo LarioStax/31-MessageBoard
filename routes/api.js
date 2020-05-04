@@ -169,6 +169,18 @@ module.exports = function (app) {
       })
     })
 
+    .put(function (req, res) {
+      const reply_id = req.body.reply_id;
+      Reply.findById(reply_id, function (err, foundReply) {
+        if (err || !foundReply) {
+          return res.json("Reply not found!");
+        } else {
+            foundReply.reported = true;
+            return res.json("Success!");
+        }
+      })
+    })
+
     .delete(function (req, res) {
       // ******* CHECK DOES THIS REMOVE THE REPLY FROM THREADS REPLIES ARRAY AS WELL!!!! *********
       const reply_id = req.body.reply_id;

@@ -183,6 +183,7 @@ module.exports = function (app) {
           return res.json("Reply not found!");
         } else {
             foundReply.reported = true;
+            foundReply.save();
             return res.json("Success!");
         }
       })

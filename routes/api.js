@@ -48,7 +48,7 @@ module.exports = function (app) {
                 } else {
                   foundBoard.threads.push(createdThread);
                   foundBoard.save();
-                  // console.log(createdThread);
+                  console.log(createdThread);
                   res.redirect("/b/" + board);
                 }
               });
@@ -56,6 +56,25 @@ module.exports = function (app) {
           })
         }
       });
+    })
+
+    .delete(function (req, res) {
+      // ******* CHECK DOES THIS REMOVE THE THREAD FROM BOARDS THREAD ARRAY AS WELL!!!! *********
+      const thread_id = req.body.thread_id;
+      const delete_password = req.body.delete_password;
+      Thread.findById(thread_id, function (err, foundThread) {
+        if (err || !foundThread) {
+          return res.json("Thread not found!");
+        } else {
+          if (foundThread.delete_password !== delete_password) {
+            return res.json("Incorrect password!");
+          }
+          if (foundThread.delete_password === delete_password) {
+            foundThread.remove()
+            return res.json("Success!");
+          }
+        }
+      })
     })
 
     .get(function (req, res) {
@@ -86,9 +105,10 @@ module.exports = function (app) {
               res.redirect(`/b/${board}/${thread_id}`)
             }
           })
-
         }
       })
-    });
+    })
+
+    .delete()
 
 };

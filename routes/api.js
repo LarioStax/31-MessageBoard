@@ -90,7 +90,7 @@ module.exports = function (app) {
                   foundBoard.threads.push(createdThread);
                   foundBoard.save();
                   // console.log(createdThread);
-                  res.redirect("/b/" + board);
+                  res.redirect(`/b/${board}/`);
                 }
               });
             }

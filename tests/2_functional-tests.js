@@ -82,6 +82,19 @@ suite('Functional Tests', function() {
     
     suite('GET', function() {
       
+      test("Get test", function (done) {
+        chai.request(server)
+          .get("/api/threads/test")
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.exists(res.body[0].text, "Not null or undefined")
+            assert.equal(res.body[0].text, "Test thread 2!")
+            assert.exists(res.body[0].replycount, "Not null or undefined")
+            assert.exists(res.body[0].created_on, "Not null or undefined")
+            assert.exists(res.body[0].bumped_on, "Not null or undefined")
+            done();
+          })
+      })
     });
     
     suite('DELETE', function() {

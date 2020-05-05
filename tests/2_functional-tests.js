@@ -285,6 +285,25 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT', function() {
+
+      test("Put test", function (done) {
+        chai.request(server)
+          .put("/api/replies/test")
+          .send({ thread_id: threadId2, reply_id: replyId })
+          .end(function (err, res) {
+            assert.equal(res.status, 200)
+            setTimeout(function () { //To allow time to set reported to true
+              Reply.findById(replyId, function (err, foundReply) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  assert.equal(foundReply.reported, true);
+                  done();
+                }
+              })
+            }, 50);
+          })
+      })
       
     });
     

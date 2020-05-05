@@ -144,7 +144,7 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT', function() {
-      
+
       test("Put test", function (done) {
         chai.request(server)
           .put("/api/threads/test")
@@ -161,6 +161,19 @@ suite('Functional Tests', function() {
             })
           })
       })
+
+      test("Put test - Wrong thread id", function (done) {
+        chai.request(server)
+          .put("/api/threads/test")
+          .send({ thread_id: "abc" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200)
+            assert.equal(res.body, "Thread not found!");
+            done();
+          })
+      })
+
+
     });
     
 

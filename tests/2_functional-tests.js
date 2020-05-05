@@ -119,6 +119,18 @@ suite('Functional Tests', function() {
             done();
           })
       })
+
+      test("Delete test - wrong thread id", function (done) {
+        chai.request(server)
+          .delete("/api/threads/test")
+          .send({ thread_id: "abc", delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Thread not found!");
+            done();
+          })
+      })
+      
     });
     
     suite('PUT', function() {

@@ -305,6 +305,17 @@ suite('Functional Tests', function() {
           })
       })
       
+      test("Put test - wrong reply id", function (done) {
+        chai.request(server)
+          .put("/api/replies/test")
+          .send({ thread_id: threadId2, reply_id: "abc" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200)
+            assert.equal(res.body, "Reply not found!");
+            done();
+          })
+      })
+      
     });
     
     suite('DELETE', function() {

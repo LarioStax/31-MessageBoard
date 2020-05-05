@@ -255,6 +255,21 @@ suite('Functional Tests', function() {
     });
     
     suite('GET', function() {
+
+      test("Get test", function (done) {
+        chai.request(server)
+          .get("/api/replies/test")
+          .query({ "thread_id": threadId2 })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            Reply.findById(replyId, function (err, foundReply) {
+              assert.exists(foundReply.text, "Not null or undefined")
+              assert.equal(foundReply.text, "Test reply!")
+              assert.exists(foundReply.created_on, "Not null or undefined")
+              done();
+            })
+          })
+      })
       
     });
     

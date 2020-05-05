@@ -229,6 +229,17 @@ suite('Functional Tests', function() {
             done();
           })
       })
+
+      test("Post test 4 - no text input", function (done) {
+        chai.request(server)
+          .post("/api/replies/test")
+          .send({ text: "", thread_id: threadId2, delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Text field empty!");
+            done();
+          })
+      })
       
     });
     

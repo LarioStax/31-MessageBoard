@@ -270,6 +270,17 @@ suite('Functional Tests', function() {
             })
           })
       })
+
+      test("Get test - wrong thread id", function (done) {
+        chai.request(server)
+          .get("/api/replies/test")
+          .query({ "thread_id": "abc" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Thread not found!");
+            done();
+          })
+      })
       
     });
     

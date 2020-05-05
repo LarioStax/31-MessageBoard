@@ -304,7 +304,7 @@ suite('Functional Tests', function() {
             }, 50);
           })
       })
-      
+
       test("Put test - wrong reply id", function (done) {
         chai.request(server)
           .put("/api/replies/test")
@@ -319,6 +319,17 @@ suite('Functional Tests', function() {
     });
     
     suite('DELETE', function() {
+
+      test("Delete test - wrong password", function (done) {
+        chai.request(server)
+          .delete("/api/replies/test")
+          .send({ reply_id: replyId, delete_password: "del" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Incorrect password!");
+            done();
+          })
+      })
       
     });
     

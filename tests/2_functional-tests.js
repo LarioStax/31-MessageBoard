@@ -341,6 +341,17 @@ suite('Functional Tests', function() {
             done();
           })
       })
+
+      test("Delete test", function (done) {
+        chai.request(server)
+          .delete("/api/replies/test")
+          .send({ reply_id: replyId, delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Success!");
+            done();
+          })
+      })
       
     });
     

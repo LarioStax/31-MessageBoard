@@ -240,6 +240,17 @@ suite('Functional Tests', function() {
             done();
           })
       })
+
+      test("Post test 5 - no delete password input", function (done) {
+        chai.request(server)
+          .post("/api/replies/test")
+          .send({ text: "Test reply 5!", thread_id: threadId2, delete_password: "" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Please provide a delete password!");
+            done();
+          })
+      })
       
     });
     

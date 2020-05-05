@@ -130,7 +130,17 @@ suite('Functional Tests', function() {
             done();
           })
       })
-      
+
+      test("Delete test", function (done) {
+        chai.request(server)
+          .delete("/api/threads/test")
+          .send({ thread_id: threadId, delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Success!");
+            done();
+          })
+      })
     });
     
     suite('PUT', function() {

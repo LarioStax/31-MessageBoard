@@ -218,6 +218,17 @@ suite('Functional Tests', function() {
             })
           })
       })
+
+      test("Post test 3 - wrong thread id", function (done) {
+        chai.request(server)
+          .post("/api/replies/test")
+          .send({ text: "Test reply 3!", thread_id: "abc", delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Thread not found!");
+            done();
+          })
+      })
       
     });
     

@@ -55,6 +55,17 @@ suite('Functional Tests', function() {
             
           })
       })
+
+      test("Post test 3 - no text input", function (done) {
+        chai.request(server)
+          .post("/api/threads/test")
+          .send({ text: "", delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Text field empty!");
+            done();
+          })
+      })
       
     });
     

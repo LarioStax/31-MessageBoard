@@ -68,6 +68,12 @@ module.exports = function (app) {
         setDefaultsOnInsert: true,
         new: true
       }
+      if (req.body.text.trim() == "") {
+        return res.json("Text field empty!");
+      }
+      if (req.body.delete_password.trim() == "") {
+        return res.json("Please provide a delete password!");
+      }
 
       Board.findOneAndUpdate({ board }, update, options, function (err, updatedBoard) {
         if (err || !updatedBoard) {
@@ -127,7 +133,7 @@ module.exports = function (app) {
         }
       })
     })
-    
+
   app.route('/api/replies/:board')
 
     .get(function (req, res) {
@@ -156,6 +162,14 @@ module.exports = function (app) {
     .post(function (req, res) {
       const board = req.params.board;
       const thread_id = req.body.thread_id;
+
+      if (req.body.text.trim() == "") {
+        return res.json("Text field empty!");
+      }
+      if (req.body.delete_password.trim() == "") {
+        return res.json("Please provide a delete password!");
+      }
+
       Thread.findById(thread_id, function (err, foundThread) {
         if (err || !foundThread) {
           return res.json("Thread not found!")
@@ -185,9 +199,9 @@ module.exports = function (app) {
         if (err || !foundReply) {
           return res.json("Reply not found!");
         } else {
-            foundReply.reported = true;
-            foundReply.save();
-            return res.json("Success!");
+          foundReply.reported = true;
+          foundReply.save();
+          return res.json("Success!");
         }
       })
     })

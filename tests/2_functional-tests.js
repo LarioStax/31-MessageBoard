@@ -200,6 +200,24 @@ suite('Functional Tests', function() {
             })
           })
       })
+
+      test("Post test 2", function (done) {
+        chai.request(server)
+          .post("/api/replies/test")
+          .send({ text: "Test reply 2!", thread_id: threadId2, delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            Reply.find({ text: "Test reply 2!" }, function (err, foundReply) {
+              if (err) {
+                console.log(err);
+              } else {
+                replyId2 = foundReply[0]._id;
+                assert.equal(foundReply[0].text, "Test reply 2!");
+                done();
+              }
+            })
+          })
+      })
       
     });
     

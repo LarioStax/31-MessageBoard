@@ -11,6 +11,16 @@ var chai = require('chai');
 var assert = chai.assert;
 var server = require('../app.js');
 
+const mongoose = require("mongoose");
+const Board = require("../models/Board.js")
+const Thread = require("../models/Thread.js")
+const Reply = require("../models/Reply.js")
+let threadId;
+let threadId2;
+let replyId;
+let replyId2;
+
+
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
@@ -99,6 +109,16 @@ suite('Functional Tests', function() {
     
     suite('DELETE', function() {
       
+      test("Delete test - wrong password", function (done) {
+        chai.request(server)
+          .delete("/api/threads/test")
+          .send({ thread_id: threadId, delete_password: "del" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Incorrect password!");
+            done();
+          })
+      })
     });
     
     suite('PUT', function() {

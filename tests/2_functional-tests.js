@@ -330,6 +330,17 @@ suite('Functional Tests', function() {
             done();
           })
       })
+
+      test("Delete test - wrong reply id", function (done) {
+        chai.request(server)
+          .delete("/api/replies/test")
+          .send({ reply_id: "abc", delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body, "Reply not found!");
+            done();
+          })
+      })
       
     });
     

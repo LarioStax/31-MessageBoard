@@ -18,6 +18,24 @@ suite('Functional Tests', function() {
   suite('API ROUTING FOR /api/threads/:board', function() {
     
     suite('POST', function() {
+
+      test("Post test 1", function (done) {
+        chai.request(server)
+          .post("/api/threads/test")
+          .send({ text: "Test thread!", delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            Thread.find({ text: "Test thread!" }, function (err, foundThread) {
+              if (err) {
+                console.log(err);
+              } else {
+                threadId = foundThread[0]._id;
+                assert.equal(foundThread[0].text, "Test thread!");
+                done();
+              }
+            })
+          })
+      })
       
     });
     

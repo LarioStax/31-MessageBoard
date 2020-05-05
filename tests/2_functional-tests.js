@@ -182,6 +182,24 @@ suite('Functional Tests', function() {
   suite('API ROUTING FOR /api/replies/:board', function() {
     
     suite('POST', function() {
+
+      test("Post test 1", function (done) {
+        chai.request(server)
+          .post("/api/replies/test")
+          .send({ text: "Test reply!", thread_id: threadId2, delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            Reply.find({ text: "Test reply!" }, function (err, foundReply) {
+              if (err) {
+                console.log(err);
+              } else {
+                replyId = foundReply[0]._id;
+                assert.equal(foundReply[0].text, "Test reply!");
+                done();
+              }
+            })
+          })
+      })
       
     });
     

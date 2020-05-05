@@ -36,6 +36,25 @@ suite('Functional Tests', function() {
             })
           })
       })
+
+      test("Post test 2", function (done) {
+        chai.request(server)
+          .post("/api/threads/test")
+          .send({ text: "Test thread 2!", delete_password: "deldel" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            Thread.find({ text: "Test thread 2!" }, function (err, foundThread) {
+              if (err) {
+                console.log(err);
+              } else {
+                threadId2 = foundThread[0]._id;
+                assert.equal(foundThread[0].text, "Test thread 2!");
+                done();
+              }
+            })
+            
+          })
+      })
       
     });
     

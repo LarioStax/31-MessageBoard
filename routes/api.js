@@ -29,12 +29,12 @@ module.exports = function (app) {
       }
 
       Board.findOneAndUpdate({ board }, update, options, function (err, updatedBoard) {
-        if (err) {
-          console.log(err);
+        if (err || !updatedBoard) {
+          return res.json("Error while updating board!");
         } else {
           Board.findOne({ board }, function (err, foundBoard) {
-            if (err) {
-              console.log(err);
+            if (err || !foundBoard) {
+              return res.json("Board not found!");
             } else {
               let options = [{
                 path: "threads",
@@ -47,8 +47,8 @@ module.exports = function (app) {
                 }
               }]
               Board.populate(foundBoard, options, function (err, populatedBoard) {
-                if (err) {
-                  console.log(err);
+                if (err || !populatedBoard) {
+                  return res.json("Error while populating board!");
                 } else {
                   res.json(populatedBoard.threads);
                 }
@@ -70,12 +70,12 @@ module.exports = function (app) {
       }
 
       Board.findOneAndUpdate({ board }, update, options, function (err, updatedBoard) {
-        if (err) {
-          console.log(err);
+        if (err || !updatedBoard) {
+          return res.json("Error while updating board!");
         } else {
           Board.findOne({ board }, function (err, foundBoard) {
-            if (err) {
-              console.log(err);
+            if (err || !foundBoard) {
+              return res.json("Board not found!");
             } else {
               let newThread = {
                 board: req.body.board,
@@ -84,7 +84,7 @@ module.exports = function (app) {
               };
               Thread.create(newThread, function (err, createdThread) {
                 if (err) {
-                  console.log(err);
+                  return res.json("Error while creating thread!");
                 } else {
                   foundBoard.threads.push(createdThread);
                   foundBoard.save();
@@ -139,9 +139,12 @@ module.exports = function (app) {
       }];
 
       Thread.findById(thread_id, function (err, foundThread) {
+        if (err || !foundThread) {
+          return res.json("Thread not found!");
+        }
         Thread.populate(foundThread, options, function (err, populatedThread) {
-          if (err) {
-            console.log(err)
+          if (err || !populatedThread) {
+            return res.json("Thread not found!");
           } else {
             res.json(populatedThread);
           }
@@ -154,8 +157,8 @@ module.exports = function (app) {
       const board = req.params.board;
       const thread_id = req.body.thread_id;
       Thread.findById(thread_id, function (err, foundThread) {
-        if (err) {
-          console.log(err);
+        if (err || !foundThread) {
+          return res.json("Thread not found!")
         } else {
           let newReply = {
             text: req.body.text,
@@ -163,7 +166,7 @@ module.exports = function (app) {
           }
           Reply.create(newReply, function (err, createdReply) {
             if (err) {
-              console.log(err);
+              return res.json("Error while creating reply");
             } else {
               foundThread.replies.push(createdReply);
               foundThread.replycount++;
